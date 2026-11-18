@@ -1,0 +1,14 @@
+﻿__pycache__/
+*.pyc
+.DS_Store
+settings.json
+_work/
+_merge/
+_shots/
+*.bak
+_edits*.py
+_shot*.png
+sample_imgs/
+build/
+dist/
+*.spec

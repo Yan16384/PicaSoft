@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#177e76">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>PicaPhoto</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<svg class="icon-sprite" aria-hidden="true">
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="i-arrow-up-down" viewBox="0 0 24 24"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5"/><path d="M14 11v5"/></symbol>
+  <symbol id="i-folders" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7l-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3"/><path d="M12 10h7a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></symbol>
+  <symbol id="i-check-square" viewBox="0 0 24 24"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+  <symbol id="i-square" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/></symbol>
+  <symbol id="i-skip-next" viewBox="0 0 24 24"><path d="m5 4 10 8-10 8V4Z"/><path d="M19 5v14"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4 16 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l1.5-3h5Z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5 3V8l-5 3"/><rect width="13" height="14" x="3" y="5" rx="2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="m3 3 18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c6.5 0 10 8 10 8a18 18 0 0 1-2.1 3.2"/><path d="M6.6 6.6C3.6 8.5 2 12 2 12s3.5 8 10 8a9.8 9.8 0 0 0 4.1-.9"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-sort-desc" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M6 12h12"/><path d="M10 18h4"/></symbol>
+  <symbol id="i-sort-asc" viewBox="0 0 24 24"><path d="M10 6h4"/><path d="M6 12h12"/><path d="M3 18h18"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect width="16" height="12" x="4" y="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 16 4-5 4 3 4-7"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="m6 4 14 8-14 8V4Z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
+  <symbol id="i-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M4 4h16l2 12v4H2v-4L4 4Z"/><path d="M2 16h5l2 2h6l2-2h5"/></symbol>
+</svg>
+<header id="topbar">
+  <button class="tb-btn" id="btn-back" aria-label="返回" style="display:none"><svg class="ui-icon"><use href="#i-arrow-left"></use></svg></button>
+  <h1 id="title">整理</h1>
+  <button class="tb-filter" id="sortTool" aria-label="整理排序" style="display:none"><svg class="ui-icon"><use href="#i-arrow-up-down"></use></svg><span>最新</span></button>
+  <button class="tb-filter" id="filterTool" aria-label="媒体筛选" style="display:none"><svg class="ui-icon"><use href="#i-grid"></use></svg><span>全部</span></button>
+  <button class="tb-btn" id="btn-add" aria-label="添加"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+</header>
+
+<main>
+  <section class="view active" id="view-home">
+    <div id="pullHint"></div>
+    <div class="tool-card" id="trashCard">
+      <div class="ic"><svg class="ui-icon"><use href="#i-trash"></use></svg></div>
+      <div class="tt"><div class="n">回收站</div><div class="d" id="trashCardD">上滑照片即可回收，误删可找回</div></div>
+      <button class="mini-clear" id="trashClear" aria-label="清空回收站"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+      <svg class="ui-icon arrow"><use href="#i-chevron-right"></use></svg>
+    </div>
+    <div id="albums"></div>
+    <div style="height:80px"></div>
+  </section>
+  <section class="view" id="view-photos"><div id="photos"></div><div style="height:120px"></div></section>
+  <section class="view" id="view-trash"><div id="trash"></div></section>
+  <section class="view" id="view-me"></section>
+</main>
+
+<nav id="tabbar" aria-label="主导航">
+  <button class="tab on" data-tab="org"><svg class="ui-icon ic"><use href="#i-folders"></use></svg><span>整理</span></button>
+  <button class="tab" data-tab="me"><svg class="ui-icon ic"><use href="#i-user"></use></svg><span>我的</span></button>
+</nav>
+
+<!-- 大图整理：上预览区 + 下工作区 -->
+<div id="viewer">
+  <div id="vPreview">
+    <div id="vTrack"></div>
+    <div id="vTrashZone"><svg class="ui-icon ic"><use href="#i-trash"></use></svg><span class="txt">松手移入回收站</span></div>
+    <div id="vHint">↑ 上滑回收 · ↓ 下滑返回 · 捏合返回</div>
+    <div class="v-count" id="vCount">1 / 1</div>
+  </div>
+  <div id="vWork">
+    <div id="vActionBar" class="viewer-action-bar" aria-label="照片操作">
+      <button class="viewer-action" id="vClose" aria-label="返回"><svg class="ui-icon"><use href="#i-x"></use></svg><span>返回</span></button>
+      <button class="viewer-action next" id="vNext" aria-label="下一张"><svg class="ui-icon"><use href="#i-skip-next"></use></svg><span>下一张</span></button>
+      <button class="viewer-action" id="vUndoCompact" aria-label="撤销" disabled><svg class="ui-icon"><use href="#i-undo"></use></svg><span>撤销</span></button>
+      <button class="viewer-action danger" id="vDelete" aria-label="移入回收站"><svg class="ui-icon"><use href="#i-trash"></use></svg><span>清除</span></button>
+    </div>
+    <div id="vWorkContent"></div>
+  </div>
+</div>
+
+<div id="multiAlbums"></div>
+<div id="selbar">
+  <span class="count" id="selCount">0 项</span>
+  <button class="sbtn" id="selAll"><svg class="ui-icon"><use href="#i-check-square"></use></svg><span>全选</span></button>
+  <button class="sbtn" id="selDone"><svg class="ui-icon"><use href="#i-check"></use></svg><span>完成</span></button>
+  <button class="sbtn green" id="selMove"><svg class="ui-icon"><use href="#i-folder"></use></svg><span>移动</span></button>
+  <button class="sbtn danger" id="selDel"><svg class="ui-icon"><use href="#i-trash"></use></svg><span>删除</span></button>
+</div>
+
+<div id="sheet">
+  <div class="panel">
+    <div class="head"><span id="sheetTitle">选择操作</span><button class="x" id="sheetX" aria-label="关闭"><svg class="ui-icon"><use href="#i-x"></use></svg></button></div>
+    <div class="list" id="sheetList"></div>
+  </div>
+</div>
+
+<div id="dlg">
+  <div class="box">
+    <div class="t" id="dlgTitle">标题</div>
+    <input id="dlgInput" placeholder="请输入名称">
+    <div class="btns"><button class="no" id="dlgCancel"><svg class="ui-icon"><use href="#i-x"></use></svg><span>取消</span></button><button class="ok" id="dlgOk"><svg class="ui-icon"><use href="#i-check"></use></svg><span>确定</span></button></div>
+  </div>
+</div>
+
+<div id="hidePanel">
+  <div class="box">
+    <div class="t">隐藏相册（照片计入未整理）</div>
+    <div class="hide-list" id="hideList"></div>
+    <div class="btns"><button class="no" id="hideCancel"><svg class="ui-icon"><use href="#i-x"></use></svg><span>取消</span></button><button class="ok" id="hideDone"><svg class="ui-icon"><use href="#i-check"></use></svg><span>完成 (0)</span></button></div>
+  </div>
+</div>
+
+<div id="updateDlg">
+  <div class="box">
+    <div class="t">发现新版本</div>
+    <div class="ver" id="updVer"></div>
+    <div class="log" id="updLog"></div>
+    <div class="btns"><button class="no" id="updIgnore"><svg class="ui-icon"><use href="#i-eye-off"></use></svg><span>忽略</span></button><button class="ok" id="updNow"><svg class="ui-icon"><use href="#i-download"></use></svg><span>更新</span></button></div>
+  </div>
+</div>
+
+<div id="phPreview"></div>
+
+
+
+
+<div id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
