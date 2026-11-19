@@ -1,0 +1,17 @@
+# Generated binaries and local build settings.
+*.exe
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+build/
+dist/
+*.spec
+.release-output/
+.gradle/
+local.properties
+*.jks
+*.keystore
+.env
+.env.*
+!.env.example

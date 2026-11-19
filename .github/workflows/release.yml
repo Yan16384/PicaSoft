@@ -1,0 +1,46 @@
+name: Release independent apps
+on:
+  push:
+    branches: [main]
+    tags: ['picacrop-v*', 'picaphoto-v*', 'picahotkeytool-v*', 'picamarkdown-v*']
+    paths: ['Pica软件合集/**', '.github/workflows/**', '.github/tools/release/**']
+  workflow_dispatch:
+    inputs:
+      project:
+        description: Software to build
+        type: choice
+        default: all
+        options: [all, picacrop, picaphoto, picahotkeytool, picamarkdown]
+permissions:
+  contents: read
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.select.outputs.projects }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - id: select
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+          REQUESTED_PROJECT: ${{ inputs.project }}
+        run: python .github/tools/release/plan.py
+  release:
+    needs: select
+    if: needs.select.outputs.projects != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJSON(needs.select.outputs.projects) }}
+    uses: ./.github/workflows/release-one.yml
+    permissions:
+      contents: write
+    with:
+      project: ${{ matrix.project }}
+    secrets: inherit

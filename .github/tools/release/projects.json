@@ -1,0 +1,27 @@
+{
+  "picacrop": {
+    "directory": "Pica软件合集/PicaCrop",
+    "entry": "PicaCrop.py",
+    "artifact": "PicaCrop",
+    "requirements": "Pica软件合集/PicaCrop/requirements.txt"
+  },
+  "picaphoto": {
+    "directory": "Pica软件合集/PicaPhoto",
+    "entry": "PicaPhoto.py",
+    "artifact": "PicaPhoto",
+    "requirements": "Pica软件合集/PicaPhoto/requirements.txt",
+    "android": "Pica软件合集/PicaPhoto/android"
+  },
+  "picahotkeytool": {
+    "directory": "Pica软件合集/PicaHotkeyTool",
+    "entry": "WindowTool.py",
+    "artifact": "PicaHotkeyTool",
+    "requirements": "Pica软件合集/PicaHotkeyTool/requirements.txt"
+  },
+  "picamarkdown": {
+    "directory": "Pica软件合集/markdown制作器",
+    "entry": "source/paper_export_app.py",
+    "artifact": "PicaMarkdownExporter",
+    "requirements": "Pica软件合集/markdown制作器/source/requirements.txt"
+  }
+}

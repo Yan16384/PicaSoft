@@ -1,0 +1,109 @@
+name: Build and publish one app
+on:
+  workflow_call:
+    inputs:
+      project:
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: '**/requirements.txt'
+      - name: Build EXE from source on GitHub runner
+        env:
+          PROJECT: ${{ inputs.project }}
+        run: python .github/tools/release/build.py $env:PROJECT --install --output .release-output
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: ${{ inputs.project }}-windows
+          path: .release-output/windows/*.exe
+          if-no-files-found: error
+          retention-days: 14
+  android:
+    if: inputs.project == 'picaphoto'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v6.3.0
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK components
+        run: sdkmanager 'platforms;android-34' 'build-tools;34.0.0'
+      - uses: gradle/actions/setup-gradle@v6.4.1
+        with:
+          gradle-version: '8.2'
+      - name: Build Android package
+        env:
+          PROJECT: ${{ inputs.project }}
+          PICA_ANDROID_KEYSTORE_BASE64: ${{ secrets.PICA_ANDROID_KEYSTORE_BASE64 }}
+          PICA_ANDROID_STORE_PASSWORD: ${{ secrets.PICA_ANDROID_STORE_PASSWORD }}
+          PICA_ANDROID_KEY_ALIAS: ${{ secrets.PICA_ANDROID_KEY_ALIAS }}
+          PICA_ANDROID_KEY_PASSWORD: ${{ secrets.PICA_ANDROID_KEY_PASSWORD }}
+        run: python .github/tools/release/build.py "$PROJECT" --platform android --output .release-output
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: ${{ inputs.project }}-android
+          path: .release-output/android/*.apk
+          if-no-files-found: error
+          retention-days: 14
+  publish:
+    needs: [windows, android]
+    if: ${{ !cancelled() && needs.windows.result == 'success' && (needs.android.result == 'success' || needs.android.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: release-${{ inputs.project }}-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: ${{ inputs.project }}-windows
+          path: .release-output/windows
+      - if: inputs.project == 'picaphoto'
+        uses: actions/download-artifact@v8.0.2
+        with:
+          name: ${{ inputs.project }}-android
+          path: .release-output/android
+      - name: Validate assets and package complete source
+        id: package
+        env:
+          PROJECT: ${{ inputs.project }}
+        run: python .github/tools/release/package.py "$PROJECT" --output .release-output
+      - name: Publish independent release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PROJECT: ${{ inputs.project }}
+          TAG: ${{ steps.package.outputs.tag }}
+          STABLE: ${{ steps.package.outputs.stable }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t assets < <(find .release-output -type f \( -name '*.exe' -o -name '*.apk' -o -name '*-source.zip' -o -name SHA256SUMS.txt \))
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "${assets[@]}" --clobber
+            gh release edit "$TAG" --notes-file .release-output/release-notes.md
+          else
+            flags=(--prerelease)
+            if [[ "$STABLE" == true ]]; then flags=(); fi
+            gh release create "$TAG" "${assets[@]}" --target "$GITHUB_SHA" --title "$PROJECT · $TAG" --notes-file .release-output/release-notes.md --latest=false "${flags[@]}"
+          fi
+          python .github/tools/release/verify.py --output .release-output
